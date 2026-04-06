@@ -1,0 +1,136 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const experiences = [
+  {
+    period: '2023 - 至今',
+    title: '高级前端工程师',
+    company: '某科技公司',
+    description: '负责公司核心产品的前端架构设计与开发，带领团队完成多个大型项目。'
+  },
+  {
+    period: '2020 - 2023',
+    title: '全栈开发工程师',
+    company: '某互联网公司',
+    description: '参与前后端开发，使用 React、Node.js 等技术栈构建 Web 应用。'
+  },
+  {
+    period: '2018 - 2020',
+    title: '初级开发工程师',
+    company: '某创业公司',
+    description: '参与产品原型开发，学习并掌握现代 Web 开发技术。'
+  }
+];
+
+const skills = [
+  { name: '前端开发', items: ['React', 'Vue.js', 'TypeScript', 'Tailwind CSS', 'Astro'] },
+  { name: '后端开发', items: ['Node.js', 'Python', 'Go', 'PostgreSQL', 'MongoDB'] },
+  { name: 'DevOps', items: ['Docker', 'Kubernetes', 'CI/CD', 'AWS', 'Linux'] },
+  { name: '工具', items: ['Git', 'GitHub', 'VS Code', 'Figma', 'Postman'] }
+];
+---
+
+<Layout title="关于我 - liuzhne" description="了解更多关于我的信息">
+  <div class="max-w-4xl mx-auto px-4 py-12">
+    <!-- Header -->
+    <header class="text-center mb-16">
+      <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+        关于我
+      </h1>
+      <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+        一个热爱技术的全栈开发者，喜欢探索新技术并分享学习心得
+      </p>
+    </header>
+
+    <!-- Bio Section -->
+    <section class="mb-16">
+      <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm border border-gray-200 dark:border-gray-700">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">自我介绍</h2>
+        <div class="prose dark:prose-invert max-w-none">
+          <p class="text-gray-600 dark:text-gray-300 mb-4">
+            你好！我是 <strong>liuzhne</strong>，一名热爱编程的全栈开发者。我在 Web 开发领域有多年的经验，
+            专注于构建高性能、用户友好的应用程序。
+          </p>
+          <p class="text-gray-600 dark:text-gray-300 mb-4">
+            我的技术栈涵盖前端和后端，包括 React、Vue.js、Node.js、Python 等。
+            我对新技术保持好奇心，喜欢尝试各种框架和工具。
+          </p>
+          <p class="text-gray-600 dark:text-gray-300">
+            创建这个博客的目的是记录我的学习历程，分享技术心得，
+            同时也希望能够帮助到其他开发者。如果你对我的文章有任何问题或建议，欢迎联系我！
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="mb-16">
+      <h2 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-8">技术栈</h2>
+      <div class="grid md:grid-cols-2 gap-6">
+        {skills.map((category) => (
+          <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">{category.name}</h3>
+            <div class="flex flex-wrap gap-2">
+              {category.items.map((skill) => (
+                <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section class="mb-16">
+      <h2 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-8">工作经历</h2>
+      <div class="space-y-6">
+        {experiences.map((exp) => (
+          <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+              <div>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">{exp.title}</h3>
+                <p class="text-blue-600 dark:text-blue-400">{exp.company}</p>
+              </div>
+              <time class="text-sm text-gray-500 dark:text-gray-400 md:text-right">{exp.period}</time>
+            </div>
+            <p class="text-gray-600 dark:text-gray-300">{exp.description}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section>
+      <h2 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-8">联系我</h2>
+      <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+        <p class="text-gray-600 dark:text-gray-300 mb-6">
+          如果你有任何问题、建议，或者只是想聊聊天，欢迎通过以下方式联系我：
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <a
+            href="https://github.com/liuzhne"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+          >
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+            GitHub
+          </a>
+          <a
+            href="mailto:1044307322@qq.com"
+            class="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+            Email
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
