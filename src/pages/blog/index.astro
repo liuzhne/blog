@@ -20,7 +20,14 @@ const sortedPosts = posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDa
       </p>
     </header>
 
-    <div class="grid gap-8">
+    <p
+      id="blog-search-status"
+      class="hidden mb-6 text-sm text-gray-500 dark:text-gray-400"
+      aria-live="polite"
+    >
+    </p>
+
+    <div id="blog-posts" class="grid gap-8">
       {sortedPosts.length === 0 ? (
         <div class="text-center py-16 text-gray-500 dark:text-gray-400">
           <p class="text-lg">还没有发布文章，敬请期待...</p>
@@ -33,7 +40,11 @@ const sortedPosts = posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDa
             day: 'numeric',
           });
           return (
-            <article class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700">
+            <article
+              data-blog-post
+              data-search-text={`${post.data.title} ${post.data.description} ${post.data.tags.join(' ')}`.toLowerCase()}
+              class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700"
+            >
               <a href={`/blog/posts/${post.id}/`} class="block">
                 <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500 dark:text-gray-400 mb-3">
                   <time datetime={post.data.pubDate.toISOString()}>{formattedDate}</time>
@@ -60,5 +71,64 @@ const sortedPosts = posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDa
         })
       )}
     </div>
+
+    <div
+      id="blog-empty-search"
+      class="hidden text-center py-16 text-gray-500 dark:text-gray-400"
+    >
+      <p class="text-lg">没有找到匹配的文章</p>
+    </div>
   </div>
 </Layout>
+
+<script>
+  const searchInputs = document.querySelectorAll<HTMLInputElement>('[data-blog-search-input]');
+  const posts = Array.from(document.querySelectorAll<HTMLElement>('[data-blog-post]'));
+  const searchStatus = document.getElementById('blog-search-status');
+  const emptySearch = document.getElementById('blog-empty-search');
+
+  function normalizeQuery(value: string) {
+    return value.trim().toLowerCase();
+  }
+
+  function applyBlogSearch(value: string, updateUrl = false) {
+    const query = normalizeQuery(value);
+    let visibleCount = 0;
+
+    posts.forEach((post) => {
+      const text = post.dataset.searchText ?? '';
+      const isVisible = query === '' || text.includes(query);
+      post.classList.toggle('hidden', !isVisible);
+      if (isVisible) visibleCount += 1;
+    });
+
+    if (searchStatus) {
+      searchStatus.classList.toggle('hidden', query === '');
+      searchStatus.textContent = query === '' ? '' : `搜索 “${value.trim()}”，找到 ${visibleCount} 篇文章`;
+    }
+
+    emptySearch?.classList.toggle('hidden', query === '' || visibleCount > 0);
+
+    if (updateUrl) {
+      const url = new URL(window.location.href);
+      if (query === '') {
+        url.searchParams.delete('q');
+      } else {
+        url.searchParams.set('q', value.trim());
+      }
+      window.history.replaceState({}, '', url);
+    }
+  }
+
+  const initialQuery = new URLSearchParams(window.location.search).get('q') ?? '';
+  searchInputs.forEach((input) => {
+    input.value = initialQuery;
+    input.addEventListener('input', () => {
+      searchInputs.forEach((otherInput) => {
+        if (otherInput !== input) otherInput.value = input.value;
+      });
+      applyBlogSearch(input.value, true);
+    });
+  });
+  applyBlogSearch(initialQuery);
+</script>
