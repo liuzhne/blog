@@ -61,7 +61,14 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('zh-CN', {
       )}
     </header>
 
-    <div class="prose dark:prose-invert prose-lg max-w-none">
+    <p
+      id="post-search-status"
+      class="hidden mb-6 text-sm text-gray-500 dark:text-gray-400"
+      aria-live="polite"
+    >
+    </p>
+
+    <div data-post-content class="prose dark:prose-invert prose-lg max-w-none">
       <slot />
     </div>
 
@@ -78,3 +85,85 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('zh-CN', {
     </footer>
   </article>
 </Layout>
+
+<script>
+  const postSearchForm = document.querySelector<HTMLFormElement>('[data-search-mode="post"]');
+  const postSearchInput = document.querySelector<HTMLInputElement>('[data-search-mode="post"] [data-blog-search-input]');
+  const postContent = document.querySelector<HTMLElement>('[data-post-content]');
+  const postSearchStatus = document.getElementById('post-search-status');
+  const originalPostHtml = postContent?.innerHTML ?? '';
+
+  function escapeRegExp(value: string) {
+    return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  function clearPostSearch() {
+    if (postContent) postContent.innerHTML = originalPostHtml;
+    postSearchStatus?.classList.add('hidden');
+    if (postSearchStatus) postSearchStatus.textContent = '';
+  }
+
+  function highlightPostMatches(query: string) {
+    if (!postContent) return 0;
+
+    postContent.innerHTML = originalPostHtml;
+    const normalizedQuery = query.trim();
+    if (normalizedQuery === '') {
+      clearPostSearch();
+      return 0;
+    }
+
+    const matcher = new RegExp(escapeRegExp(normalizedQuery), 'gi');
+    const walker = document.createTreeWalker(postContent, NodeFilter.SHOW_TEXT, {
+      acceptNode(node) {
+        const parent = node.parentElement;
+        if (!node.nodeValue?.trim() || !parent) return NodeFilter.FILTER_REJECT;
+        if (['SCRIPT', 'STYLE', 'MARK'].includes(parent.tagName)) return NodeFilter.FILTER_REJECT;
+        matcher.lastIndex = 0;
+        return matcher.test(node.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+      },
+    });
+
+    const nodes: Text[] = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode as Text);
+
+    let count = 0;
+    nodes.forEach((node) => {
+      const text = node.nodeValue ?? '';
+      const fragment = document.createDocumentFragment();
+      let lastIndex = 0;
+      matcher.lastIndex = 0;
+
+      text.replace(matcher, (match, offset) => {
+        fragment.append(document.createTextNode(text.slice(lastIndex, offset)));
+        const mark = document.createElement('mark');
+        mark.className = 'rounded bg-yellow-200 px-1 text-gray-900 dark:bg-yellow-300';
+        mark.textContent = match;
+        fragment.append(mark);
+        lastIndex = offset + match.length;
+        count += 1;
+        return match;
+      });
+
+      fragment.append(document.createTextNode(text.slice(lastIndex)));
+      node.parentNode?.replaceChild(fragment, node);
+    });
+
+    if (postSearchStatus) {
+      postSearchStatus.classList.remove('hidden');
+      postSearchStatus.textContent = `搜索 “${normalizedQuery}”，找到 ${count} 处匹配`;
+    }
+
+    postContent.querySelector('mark')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return count;
+  }
+
+  postSearchForm?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    highlightPostMatches(postSearchInput?.value ?? '');
+  });
+
+  postSearchInput?.addEventListener('input', () => {
+    highlightPostMatches(postSearchInput.value);
+  });
+</script>

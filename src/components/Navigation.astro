@@ -6,6 +6,9 @@ const navItems = [
 ];
 
 const currentPath = Astro.url.pathname;
+const searchQuery = Astro.url.searchParams.get('q') ?? '';
+const isBlogPost = currentPath.startsWith('/blog/posts/');
+const searchPlaceholder = isBlogPost ? '搜索博客内容' : '搜索博客';
 ---
 
 <nav class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
@@ -15,6 +18,32 @@ const currentPath = Astro.url.pathname;
       <a href="/" class="text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
         liuzhne
       </a>
+
+      <!-- Blog Search -->
+      <form
+        action="/blog/"
+        method="get"
+        role="search"
+        data-blog-search-form
+        data-search-mode={isBlogPost ? 'post' : 'blog'}
+        class="flex-1 max-w-xs md:max-w-sm mx-4"
+      >
+        <label class="relative block">
+          <span class="sr-only">{searchPlaceholder}</span>
+          <svg class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15z" />
+          </svg>
+          <input
+            data-blog-search-input
+            type="search"
+            name="q"
+            value={isBlogPost ? '' : searchQuery}
+            placeholder={searchPlaceholder}
+            autocomplete="off"
+            class="w-full rounded-full border border-gray-200 dark:border-gray-700 bg-gray-50/90 dark:bg-gray-800/90 py-2 pl-9 pr-3 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+          />
+        </label>
+      </form>
 
       <!-- Desktop Navigation -->
       <div class="hidden md:flex items-center gap-8">
