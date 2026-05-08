@@ -12,7 +12,7 @@ const experiences = [
     period: '2020 - 2023',
     title: '全栈开发工程师',
     company: '某互联网公司',
-    description: '参与前后端开发，使用 React、Node.js 等技术栈构建 Web 应用。'
+    description: '参与前后端开发，使用 Java、Redis、Go 等技术栈构建 Web 应用。'
   },
   {
     period: '2018 - 2020',
@@ -23,110 +23,136 @@ const experiences = [
 ];
 
 const skills = [
-  { name: '前端开发', items: ['React', 'Vue.js', 'TypeScript', 'Tailwind CSS', 'Astro'] },
-  { name: '后端开发', items: ['Node.js', 'Python', 'Go', 'PostgreSQL', 'MongoDB'] },
-  { name: 'DevOps', items: ['Docker', 'Kubernetes', 'CI/CD', 'AWS', 'Linux'] },
-  { name: '工具', items: ['Git', 'GitHub', 'VS Code', 'Figma', 'Postman'] }
+  { name: '前端开发', items: ['Vue.js', 'JavaScript'] },
+  { name: '后端开发', items: ['Java', 'Redis', 'Go', 'PostgreSQL', 'MongoDB'] },
+  { name: 'DevOps', items: ['Docker', 'Kubernetes', 'CI/CD', 'Linux'] },
+  { name: '工具', items: ['Git', 'GitHub', 'VS Code', 'Postman'] }
 ];
+
+const techParticles = Array.from({ length: 32 }, (_, index) => ({
+  left: (index * 37) % 100,
+  top: (index * 29) % 88,
+  delay: -(index % 10) * 0.42,
+  duration: 7 + (index % 6),
+  size: 10 + (index % 5) * 5,
+  drift: index % 2 === 0 ? 42 + index : -38 - index,
+  type: ['data', 'network', 'light', 'grid', 'signal'][index % 5],
+}));
 ---
 
 <Layout title="关于我 - liuzhne" description="了解更多关于我的信息">
-  <div class="max-w-4xl mx-auto px-4 py-12">
-    <!-- Header -->
-    <header class="text-center mb-16">
-      <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
-        关于我
-      </h1>
-      <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-        一个热爱技术的全栈开发者，喜欢探索新技术并分享学习心得
-      </p>
-    </header>
+  <div class="about-page">
+    <section class="about-hero relative overflow-hidden px-4 py-24 text-center md:py-32">
+      <div class="tech-field pointer-events-none absolute inset-0" aria-hidden="true">
+        <div class="tech-grid absolute inset-0"></div>
+        <div class="network-line network-line-a absolute"></div>
+        <div class="network-line network-line-b absolute"></div>
+        <div class="network-line network-line-c absolute"></div>
+        {techParticles.map((particle) => (
+          <span
+            class={`tech-particle tech-${particle.type} absolute`}
+            style={`--x:${particle.left}%; --y:${particle.top}%; --delay:${particle.delay}s; --duration:${particle.duration}s; --size:${particle.size}px; --drift:${particle.drift}px; --from-x:${50 - particle.left}vw; --from-y:${38 - particle.top}vh; --burst-delay:${(particle.left + particle.top) % 9 * 0.035}s;`}
+          />
+        ))}
+      </div>
+      <div class="relative mx-auto max-w-4xl">
+        <p class="mb-4 text-lg font-semibold text-blue-600 dark:text-blue-400 md:text-xl">
+          关于我
+        </p>
+        <h1 class="mx-auto max-w-3xl text-6xl font-bold tracking-tight text-gray-950 dark:text-white md:text-8xl">
+          liuzhne
+        </h1>
+        <p class="mx-auto mt-6 max-w-2xl text-xl leading-8 text-gray-600 dark:text-gray-300 md:text-2xl">
+          写代码，做系统，也记录一路上的技术判断。
+        </p>
+      </div>
+    </section>
 
-    <!-- Bio Section -->
-    <section class="mb-16">
-      <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm border border-gray-200 dark:border-gray-700">
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">自我介绍</h2>
-        <div class="prose dark:prose-invert max-w-none">
-          <p class="text-gray-600 dark:text-gray-300 mb-4">
-            你好！我是 <strong>liuzhne</strong>，一名热爱编程的全栈开发者。我在 Web 开发领域有多年的经验，
-            专注于构建高性能、用户友好的应用程序。
+    <section class="px-4 py-16">
+      <div class="mx-auto grid max-w-4xl gap-8 md:grid-cols-[0.85fr_1.15fr] md:items-center">
+        <div>
+          <p class="text-sm font-semibold text-blue-600 dark:text-blue-400">Profile</p>
+          <h2 class="mt-3 text-4xl font-bold tracking-tight text-gray-950 dark:text-white md:text-5xl">
+            全栈开发者，偏爱清晰、稳定的工程实践。
+          </h2>
+        </div>
+        <div class="space-y-5 text-lg leading-8 text-gray-600 dark:text-gray-300">
+          <p>
+            你好！我是 <strong class="text-gray-950 dark:text-white">liuzhne</strong>，一名热爱编程的全栈开发者。我在 Web 开发领域有多年的经验，专注于构建高性能、用户友好的应用程序。
           </p>
-          <p class="text-gray-600 dark:text-gray-300 mb-4">
-            我的技术栈涵盖前端和后端，包括 React、Vue.js、Node.js、Python 等。
-            我对新技术保持好奇心，喜欢尝试各种框架和工具。
+          <p>
+            我的技术栈涵盖前端、后端与 DevOps，包括 Vue.js、JavaScript、Java、Redis、Go、PostgreSQL、MongoDB、Docker、Kubernetes、CI/CD 和 Linux 等。我对新技术保持好奇心，也重视把技术沉淀为稳定、可维护的工程实践。
           </p>
-          <p class="text-gray-600 dark:text-gray-300">
-            创建这个博客的目的是记录我的学习历程，分享技术心得，
-            同时也希望能够帮助到其他开发者。如果你对我的文章有任何问题或建议，欢迎联系我！
+          <p>
+            创建这个博客的目的是记录我的学习历程，分享技术心得，同时也希望能够帮助到其他开发者。
           </p>
         </div>
       </div>
     </section>
 
-    <!-- Skills Section -->
-    <section class="mb-16">
-      <h2 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-8">技术栈</h2>
-      <div class="grid md:grid-cols-2 gap-6">
-        {skills.map((category) => (
-          <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">{category.name}</h3>
-            <div class="flex flex-wrap gap-2">
-              {category.items.map((skill) => (
-                <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
-
-    <!-- Experience Section -->
-    <section class="mb-16">
-      <h2 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-8">工作经历</h2>
-      <div class="space-y-6">
-        {experiences.map((exp) => (
-          <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
-              <div>
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">{exp.title}</h3>
-                <p class="text-blue-600 dark:text-blue-400">{exp.company}</p>
+    <section class="bg-gray-50 px-4 py-20 dark:bg-gray-800/40">
+      <div class="mx-auto max-w-4xl">
+        <div class="mb-10 text-center">
+          <p class="text-sm font-semibold text-blue-600 dark:text-blue-400">Stack</p>
+          <h2 class="mt-3 text-4xl font-bold tracking-tight text-gray-950 dark:text-white md:text-5xl">技术栈</h2>
+        </div>
+        <div class="grid gap-4 md:grid-cols-2">
+          {skills.map((category) => (
+            <section class="rounded-[28px] bg-white p-8 shadow-sm ring-1 ring-gray-200 dark:bg-gray-900 dark:ring-gray-700">
+              <h3 class="text-2xl font-bold text-gray-950 dark:text-white">{category.name}</h3>
+              <div class="mt-6 flex flex-wrap gap-2">
+                {category.items.map((skill) => (
+                  <span class="rounded-full bg-blue-50 px-4 py-2 text-sm font-medium text-blue-700 dark:bg-blue-950 dark:text-blue-200">
+                    {skill}
+                  </span>
+                ))}
               </div>
-              <time class="text-sm text-gray-500 dark:text-gray-400 md:text-right">{exp.period}</time>
-            </div>
-            <p class="text-gray-600 dark:text-gray-300">{exp.description}</p>
-          </div>
-        ))}
+            </section>
+          ))}
+        </div>
       </div>
     </section>
 
-    <!-- Contact Section -->
-    <section>
-      <h2 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-8">联系我</h2>
-      <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-        <p class="text-gray-600 dark:text-gray-300 mb-6">
-          如果你有任何问题、建议，或者只是想聊聊天，欢迎通过以下方式联系我：
+    <section class="px-4 py-20">
+      <div class="mx-auto max-w-4xl">
+        <div class="mb-10 text-center">
+          <p class="text-sm font-semibold text-blue-600 dark:text-blue-400">Experience</p>
+          <h2 class="mt-3 text-4xl font-bold tracking-tight text-gray-950 dark:text-white md:text-5xl">工作经历</h2>
+        </div>
+        <div class="divide-y divide-gray-200 rounded-[28px] bg-white px-6 shadow-sm ring-1 ring-gray-200 dark:divide-gray-700 dark:bg-gray-900 dark:ring-gray-700 md:px-10">
+          {experiences.map((exp) => (
+            <section class="grid gap-4 py-8 md:grid-cols-[160px_1fr]">
+              <time class="text-sm font-medium text-gray-500 dark:text-gray-400">{exp.period}</time>
+              <div>
+                <h3 class="text-2xl font-bold text-gray-950 dark:text-white">{exp.title}</h3>
+                <p class="mt-1 text-blue-600 dark:text-blue-400">{exp.company}</p>
+                <p class="mt-4 text-lg leading-8 text-gray-600 dark:text-gray-300">{exp.description}</p>
+              </div>
+            </section>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="px-4 pb-24 text-center">
+      <div class="mx-auto max-w-3xl rounded-[32px] bg-gray-950 px-8 py-14 text-white dark:bg-white dark:text-gray-950">
+        <h2 class="text-4xl font-bold tracking-tight md:text-5xl">一起交流技术想法。</h2>
+        <p class="mx-auto mt-5 max-w-xl text-lg leading-8 text-gray-300 dark:text-gray-600">
+          如果你有任何问题、建议，或者只是想聊聊技术与工程实践，欢迎联系我。
         </p>
-        <div class="flex flex-wrap gap-4">
+        <div class="mt-8 flex flex-wrap justify-center gap-4">
           <a
             href="https://github.com/liuzhne"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+            class="rounded-full bg-white px-5 py-3 text-sm font-semibold text-gray-950 transition hover:bg-gray-200 dark:bg-gray-950 dark:text-white dark:hover:bg-gray-800"
           >
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-            </svg>
             GitHub
           </a>
           <a
             href="mailto:1044307322@qq.com"
-            class="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors"
+            class="rounded-full bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700"
           >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-            </svg>
             Email
           </a>
         </div>
@@ -134,3 +160,215 @@ const skills = [
     </section>
   </div>
 </Layout>
+
+<style>
+  .about-hero {
+    min-height: 560px;
+    display: grid;
+    place-items: center;
+    background:
+      radial-gradient(circle at 50% 18%, rgba(191, 219, 254, 0.62), transparent 30rem),
+      linear-gradient(180deg, #eff6ff 0%, #f8fbff 56%, #ffffff 100%);
+  }
+
+  .dark .about-hero {
+    background:
+      radial-gradient(circle at 50% 18%, rgba(30, 64, 175, 0.24), transparent 28rem),
+      linear-gradient(180deg, rgba(15, 23, 42, 0.95), rgba(17, 24, 39, 0));
+  }
+
+  .tech-field {
+    transform-origin: 50% 38%;
+    animation: field-burst 1100ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .tech-grid {
+    opacity: 0.36;
+    background-image:
+      linear-gradient(rgba(59, 130, 246, 0.18) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59, 130, 246, 0.18) 1px, transparent 1px);
+    background-size: 72px 72px;
+    mask-image: radial-gradient(circle at 50% 38%, black 0, transparent 64%);
+  }
+
+  .network-line {
+    height: 1px;
+    width: 28vw;
+    background: linear-gradient(90deg, transparent, rgba(37, 99, 235, 0.42), transparent);
+    transform-origin: center;
+    animation: signal-sweep 7s ease-in-out infinite;
+  }
+
+  .network-line-a {
+    top: 23%;
+    left: 12%;
+    transform: rotate(14deg);
+  }
+
+  .network-line-b {
+    top: 42%;
+    right: 10%;
+    transform: rotate(-18deg);
+    animation-delay: -2s;
+  }
+
+  .network-line-c {
+    bottom: 25%;
+    left: 35%;
+    transform: rotate(6deg);
+    animation-delay: -4s;
+  }
+
+  .tech-particle {
+    display: block;
+    top: var(--y);
+    left: var(--x);
+    width: var(--size);
+    height: var(--size);
+    color: rgba(37, 99, 235, 0.48);
+    opacity: 0.9;
+    transform-origin: center;
+    animation:
+      particle-burst 980ms cubic-bezier(0.16, 1, 0.3, 1) both,
+      tech-float var(--duration) ease-in-out infinite;
+    animation-delay: var(--burst-delay), calc(980ms + var(--delay));
+  }
+
+  .tech-data::before,
+  .tech-network::before,
+  .tech-light::before,
+  .tech-grid::before,
+  .tech-signal::before,
+  .tech-data::after,
+  .tech-network::after,
+  .tech-light::after,
+  .tech-signal::after {
+    content: "";
+    position: absolute;
+  }
+
+  .tech-data::before {
+    inset: 20%;
+    border-radius: 999px;
+    background: rgba(37, 99, 235, 0.48);
+    box-shadow:
+      calc(var(--size) * 0.7) calc(var(--size) * -0.35) 0 rgba(100, 116, 139, 0.38),
+      calc(var(--size) * -0.55) calc(var(--size) * 0.45) 0 rgba(59, 130, 246, 0.3);
+  }
+
+  .tech-network::before {
+    left: 8%;
+    top: 48%;
+    width: 84%;
+    height: 1px;
+    background: currentColor;
+    transform: rotate(28deg);
+  }
+
+  .tech-network::after {
+    inset: 18%;
+    border-radius: 999px;
+    border: 1px solid currentColor;
+    box-shadow: calc(var(--size) * 0.55) calc(var(--size) * -0.2) 0 -1px currentColor;
+  }
+
+  .tech-light::before {
+    inset: 8%;
+    border-radius: 999px;
+    background: radial-gradient(circle, rgba(37, 99, 235, 0.34), rgba(147, 197, 253, 0.08) 58%, transparent 70%);
+    filter: blur(0.5px);
+  }
+
+  .tech-grid::before {
+    inset: 12%;
+    border: 1px solid rgba(37, 99, 235, 0.36);
+    background-image:
+      linear-gradient(rgba(37, 99, 235, 0.28) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(37, 99, 235, 0.28) 1px, transparent 1px);
+    background-size: 7px 7px;
+  }
+
+  .tech-signal::before {
+    inset: 20%;
+    border-radius: 999px;
+    border: 1px solid rgba(37, 99, 235, 0.45);
+  }
+
+  .tech-signal::after {
+    inset: 0;
+    border-radius: 999px;
+    border: 1px solid rgba(37, 99, 235, 0.24);
+  }
+
+  @keyframes tech-float {
+    0% {
+      transform: translate3d(0, 0, 0) rotate(0deg) scale(0.96);
+    }
+
+    50% {
+      transform: translate3d(calc(var(--drift) * 0.35), -22px, 0) rotate(8deg) scale(1.06);
+    }
+
+    100% {
+      transform: translate3d(0, 0, 0) rotate(0deg) scale(0.96);
+    }
+  }
+
+  @keyframes particle-burst {
+    0% {
+      opacity: 0;
+      transform: translate3d(var(--from-x), var(--from-y), 0) scale(0.28) rotate(-18deg);
+      filter: blur(8px);
+    }
+
+    58% {
+      opacity: 1;
+      filter: blur(0);
+    }
+
+    100% {
+      opacity: 0.9;
+      transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+      filter: blur(0);
+    }
+  }
+
+  @keyframes field-burst {
+    0% {
+      opacity: 0;
+      transform: scale(0.18);
+      filter: blur(18px);
+    }
+
+    62% {
+      opacity: 1;
+      filter: blur(0);
+    }
+
+    100% {
+      opacity: 1;
+      transform: scale(1);
+      filter: blur(0);
+    }
+  }
+
+  @keyframes signal-sweep {
+    0%,
+    100% {
+      opacity: 0.08;
+    }
+
+    50% {
+      opacity: 0.34;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tech-field,
+    .tech-particle,
+    .network-line {
+      animation: none;
+      opacity: 0.18;
+    }
+  }
+</style>
